@@ -1,0 +1,6 @@
+# Problem Fixing
+
+1.  NameController not found ?
+
+    - pada routes/web.php -> use App\Http\Controllers\NamaController -> panggil nama controller kamu
+    - atau pada App\Providers\RouteServiceProvider -> ganti ->namespace($this->namespace) menjadi ->namespace('App\Http\Controllers')
