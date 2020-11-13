@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/libraries/tabler.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/css/libraries/demo.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/css/libraries/line-awesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/css/libraries/c3.css') }}">
     <link rel="stylesheet" href="{{ asset('/assets/css/build/style.css') }}">
     
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/datatables.min.css"/>

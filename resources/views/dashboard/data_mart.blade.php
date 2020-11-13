@@ -25,11 +25,7 @@
                         </div>
 
                         <div class="col-auto d-print-none">
-                          <button class="btn btn-primary" onclick="_upload()"> <i class="la la-lg la-file-excel mr-1"></i> Upload Excel</button>
-                        </div>
-
-                        <div class="col-auto">
-                          <button class="btn btn-danger" type="button" onclick="_delete()"> <i class="la la-lg la-trash py-1"></i> </button>
+                          <button class="btn btn-primary" onclick="_new()"> <i class="la la-lg la-chart-bar mr-1"></i> Kelola Data</button>
                         </div>
                       </div>
                     </div> 
@@ -38,11 +34,19 @@
             </div>
         </div>
 
-    @include('modals.form_data_center')
+    @include('modals.form_pilih_tahun')
     @include('modals.confirm')
-    @include('partials.script')
 
     <script>
+
+      function _new(){
+        $('#form-pilih-tahun').modal('show').setForm((f) => submit(f))
+      }
+      
+      function submit(f){
+        let year = $(f).find('select').val()
+        moveTo(`data-mart/chart?tahun=${year}&by=jenis kelamin`)
+      }
       
     </script>
 

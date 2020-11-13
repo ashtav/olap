@@ -77,7 +77,7 @@
 
     @include('modals.form_data_center')
     @include('modals.confirm')
-    @include('partials.script')
+    {{-- @include('partials.script') --}}
 
     <script>
       $(document).ready(function() {

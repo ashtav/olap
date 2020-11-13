@@ -181,6 +181,10 @@ const dataURLtoFile = (dataurl, filename) => {
     return new File([u8arr], filename, {type:mime});
 }
 
+    // kelompokkan data object dalam array berdasarkan properti
+const groupByKey = (list, key) => list.reduce((hash, obj) => ({...hash, [obj[key]]:( hash[obj[key]] || [] ).concat(obj)}), {})
+
+
     // set form pada modal, dengan begitu kita tinggal membuat fungsi submitnya saja
 $.fn.setForm = function(action){
     let mb = $(this).find('.modal-body'),
