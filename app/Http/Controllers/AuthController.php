@@ -118,6 +118,9 @@ class AuthController extends Controller
 
                 $user = User::where('email', $request->email)->first();
                 Session::put('auth', $user);
+
+                $userDetails = UserDetails::where(['user_id' => $user->id])->first();
+                Session::put('nama', $userDetails->nama);
                 
                 return response()->json([
                     'message' => 'Login has been succesful'

@@ -20,7 +20,37 @@
                   </div>
 
                   <div class="alert alert-info">
-                    <b>Selamat Datang {{Auth::user()->email}}</b>
+                    Selamat Datang <b>{{Session::get('nama')}}</b> <i class="la la-lg la-smile"></i>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 col-xl-4">
+                      <a class="card card-link" href="{{url('user')}}">
+                        <div class="card-body">
+                          <div class="float-right">
+                            <h1>{{$user}}</h1>
+                          </div>
+                          <div class="lh-sm">
+                            <div class="strong">Jumlah Pengguna</div>
+                            <div class="text-muted">Admin, Marketing, & Rektor</div>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+                    <div class="col-md-6 col-xl-4">
+                      <a class="card card-link" href="{{url('data-center')}}">
+                        <div class="card-body">
+                          <div class="float-right">
+                            <h1>{{$center}}</h1>
+                          </div>
+                          <div class="lh-sm">
+                            <div class="strong">Jumlah Data Center</div>
+                            <div class="text-muted">Berdasarkan Tahun</div>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
                   </div>
                 </div>
             </div>

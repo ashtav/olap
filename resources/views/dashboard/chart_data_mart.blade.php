@@ -25,10 +25,14 @@
                         </div> --}}
 
                         <div class="col-auto ml-auto">
-                          <button class="btn btn-outline-primary mr-2" onclick="_reDrawChart()"> <i class="la la-lg la-refresh mr-1"></i> Perbarui</button>
+                          {{-- <button class="btn btn-outline-primary mr-2" onclick="_reDrawChart()"> <i class="la la-lg la-refresh mr-1"></i> Perbarui</button> --}}
                           <button class="btn btn-primary" onclick="_new()"> <i class="la la-lg la-save mr-1"></i> Simpan Data</button>
                         </div>
                       </div>
+                    </div>
+
+                    <div class="alert alert-info" style="display: inline-block">
+                      <i class="la la-lg la-file-alt mr-1"></i> Diambil dari data tahun <b>{{app('request')->input('tahun')}}</b> dengan jumlah data sebanyak <b id="jumlahData">-</b>
                     </div>
 
                     <div class="mb-3">
@@ -47,6 +51,8 @@
 
                       </div>
                     </div>
+
+                    <div id="loader">Memuat grafik, mohon menunggu...</div>
                     
                     <div id="chart"></div>
 
@@ -80,6 +86,8 @@
           data: { tahun: tahun },
           success: (res) => {
             dataCenter = res.data
+            $('#jumlahData').html(res.data.length)
+            $('#loader').hide()
             
             setTimeout(() => _reDrawChart(), 200); // buat dan tampilkan grafik dalam waktu 0.2 detik
           }
@@ -145,7 +153,7 @@
                 c3names[`data${i}`] = key
 
                 i++
-                if(i == 15) break // ambil 20 data saja
+                if(i == 16) break // ambil 20 data saja
               }
               
               // urutkan dari terbesar ke terkecil
