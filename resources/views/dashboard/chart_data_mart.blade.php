@@ -26,7 +26,7 @@
 
                         <div class="col-auto ml-auto">
                           {{-- <button class="btn btn-outline-primary mr-2" onclick="_reDrawChart()"> <i class="la la-lg la-refresh mr-1"></i> Perbarui</button> --}}
-                          <button class="btn btn-primary" onclick="_new()"> <i class="la la-lg la-save mr-1"></i> Simpan Data</button>
+                          <button class="btn btn-primary" onclick="_saveDataMart()"> <i class="la la-lg la-save mr-1"></i> Simpan Data</button>
                         </div>
                       </div>
                     </div>
@@ -66,6 +66,7 @@
 
     @include('modals.confirm')
     @include('modals.detail_data_chart')
+    @include('modals.save_data_mart')
       
     <script>
 
@@ -549,6 +550,11 @@
       // console.log(
       //   calcCrow(-8.654983, 115.195425, -8.651478, 115.195437).toFixed(1)+' km'
       // )
+
+      function _saveDataMart(){
+        let mod = $('#save-data-mart')
+        mod.modal('show')
+      }
       
     </script>
 

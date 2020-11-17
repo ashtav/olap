@@ -30,6 +30,31 @@
                       </div>
                     </div> 
 
+                    <div class="card px-2 pb-3">
+                      <table id="datatable" class="table m-0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th>Tanggal</th>
+                                <th>Oleh</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                            <tr>
+                              <td> 1 </td>
+                              <td> Lorem </td>
+                              <td> 10/02/2020  </td>
+                              <td> Lorem Ipsum Name  </td>
+                              <td> <button class="btn btn-white"> <i class="la la-lg la-download mr-1"></i> Download </button> </td>
+                            </tr>
+                          
+                        </tbody>
+                      </table>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -38,6 +63,12 @@
     @include('modals.confirm')
 
     <script>
+
+      $(document).ready(function() {
+          $('#datatable').DataTable({
+            searching: false, info: false, bLengthChange: false, pageLength: 20
+          });
+      });
 
       function _new(){
         $('#form-pilih-tahun').modal('show').setForm((f) => submit(f))
