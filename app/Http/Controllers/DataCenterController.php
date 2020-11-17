@@ -38,6 +38,8 @@ class DataCenterController extends Controller
                         'data_id' => $data->id ?? $dc->first()->id,
                         'nama' => $d->nama,
                         'alamat' => $d->alamat,
+                        'kota' => $d->kota,
+                        'gps' => $d->gps,
                         'tanggal_lahir' => Helpers::excelDate($d->tanggal_lahir ?? 0),
                         'jenis_kelamin' => $d->jenis_kelamin,
                         'asal_sekolah' => $d->asal_sekolah,

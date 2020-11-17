@@ -16,6 +16,8 @@ class DetailDataCenter extends Model
         'data_id',
         'nama',
         'alamat',
+        'kota',
+        'gps',
         'tanggal_lahir',
         'jenis_kelamin',
         'asal_sekolah',

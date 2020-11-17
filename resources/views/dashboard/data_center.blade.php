@@ -142,11 +142,28 @@
               })
 
               // tentukan key yang diizinkan
-              let allowed = ['nama','alamat','tanggal_lahir','jenis_kelamin','asal_sekolah','pekerjaan_orang_tua'];
+              let allowed = ['nama','alamat','kota','gps','tanggal_lahir','jenis_kelamin','asal_sekolah','pekerjaan_orang_tua'];
 
               objs.forEach(o => { // set hanya yang diizinkan
                 Object.entries(o).map(([k, v]) => allowed.indexOf(k) < 0 ? delete o[k] : o[k])
               })
+
+              // cek key atau header, jika satu saja tidak terpenuhi maka gagal
+              let available = []
+
+              for (const key in objs[0]) {
+                if(allowed.indexOf(key) > -1){
+                  available.push(key)
+                }
+              }
+
+              if(allowed.length != available.length){
+                new Toast().view('File excel tidak valid!')
+                $('#filename').html('')
+                $('#file').val('')
+                files = []
+                return
+              }
 
               files = objs
             })

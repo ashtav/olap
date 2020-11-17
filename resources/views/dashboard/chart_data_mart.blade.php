@@ -39,7 +39,7 @@
                       <div class="form-label">Tampilkan Berdasarkan</div>
                       <div class="view-by">
                         @php
-                            $by = ['jenis kelamin','alamat','asal sekolah','pekerjaan orang tua'];
+                            $by = ['jenis kelamin','kota','asal sekolah','pekerjaan orang tua','jarak'];
                         @endphp
 
                         @foreach ($by as $item)
@@ -56,15 +56,20 @@
                     
                     <div id="chart"></div>
 
+                    <div class="text-center my-3">
+                      <button class="btn btn-white btn-pill" onclick="_detailDataChart()">Lihat Semua</button>
+                    </div>
+
                 </div>
             </div>
         </div>
 
     @include('modals.confirm')
+    @include('modals.detail_data_chart')
       
     <script>
 
-      let dataCenter = []
+      let stiparGPS = [-8.630368, 115.176738], dataCenter = []
 
       function _select(e){
         let tahun = urlp('tahun')
@@ -140,6 +145,42 @@
             }
             
             break
+
+          case 'kota': {
+            let res = groupByKey(data, 'kota'), i = 1, c3data = [], c3names = {}
+
+            for (const key in res) {
+              c3data.push([
+                `data${i}`, res[key].length
+              ])
+
+              c3names[`data${i}`] = key
+
+              i++
+              if(i == 16) break // ambil 20 data saja
+            }
+            
+            // urutkan dari terbesar ke terkecil
+            c3data.sort(function(a, b){ return b[1] - a[1] });
+
+            drawChart({
+              data: {
+                columns: c3data,
+                type: 'bar',
+                names: c3names
+              },
+              axis: {
+                y: {
+                  label: {
+                    text: 'Jumlah Kota',
+                    position: 'outer-middle'
+                  }
+                },
+              }
+            })
+          }
+
+          break
           
             // tampilkan berdasarkan asal sekolah
           case 'asal sekolah': {
@@ -192,7 +233,7 @@
                   c3names[`data${i}`] = key
 
                   i++
-                  if(i == 15) break // ambil 20 data saja
+                  if(i == 16) break // ambil 15 data saja
                 }
               }
               
@@ -217,10 +258,235 @@
             }
 
             break
+
+          case 'jarak': {
+            let temp = [], c3data = [], c3names = {}
+            
+            for (let i = 0; i < data.length; i++) {
+              if(data[i].gps.trim() != ''){
+                let gps = data[i].gps.split(', '),
+                jarak = calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1)
+
+                // bagi range jarak 0 - 10, 10 - 50, 50 - 100, dst max 500
+                let range = ''
+
+                if(jarak < 10){ range = '0-10 km' }
+                else if(jarak >= 10 && jarak < 50){ range = '10-50 km' }
+                else if(jarak >= 50 && jarak < 100){ range = '50-100 km' }
+                else if(jarak >= 100 && jarak < 150){ range = '100-150 km' }
+                else if(jarak >= 150 && jarak < 200){ range = '150-200 km' }
+                else if(jarak >= 200 && jarak < 250){ range = '200-250 km' }
+                else if(jarak >= 250 && jarak < 300){ range = '250-300 km' }
+                else if(jarak >= 300 && jarak < 350){ range = '300-350 km' }
+                else if(jarak >= 400 && jarak < 450){ range = '400-450 km' }
+                else{ range = '>450 km' }
+
+                temp.push({
+                  kota: data[i].kota,
+                  jarak: calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1),
+                  range: range
+                })
+              }
+            }
+
+            let res = groupByKey(temp, 'range'), i = 1
+
+              for (const key in res) {
+                c3data.push([
+                  `data${i}`, res[key].length
+                ])
+
+                c3names[`data${i}`] = res[key][0].kota+', '+ key
+
+                i++
+                if(i == 16) break // ambil 15 data saja
+              }
+              
+              // urutkan dari terbesar ke terkecil
+              c3data.sort(function(a, b){ return b[1] - a[1] });
+
+              drawChart({
+                data: {
+                  columns: c3data,
+                  type: 'bar',
+                  names: c3names
+                },
+                axis: {
+                  y: {
+                    label: {
+                      text: 'Jumlah Siswa',
+                      position: 'outer-middle'
+                    }
+                  },
+                }
+              })
+          }
+
+          break
         
           default:
             break;
         }
+      }
+
+      function _detailDataChart(){
+        let mod = $('#detail-data-chart'), by = urlp('by') || 'jenis kelamin', data = dataCenter
+
+        let ul = '<ul class="list-group">', li = '<li class="list-group-item">'
+
+        mod.find('.modal-body').html('')
+
+        switch (by) {
+          case 'jenis kelamin': {
+              let l = data.filter((e) => e.jenis_kelamin == 'L').length,
+                  p = data.filter((e) => e.jenis_kelamin == 'P').length
+
+              mod.find('.modal-body').append(
+                $(ul).append(
+                  $(li).html('<b>Laki-Laki</b> <span class="float-right">'+l+'</span>'),
+                  $(li).html('<b>Perempuan</b> <span class="float-right">'+p+'</span>')
+                )
+              )
+          }
+
+          break
+
+          case 'kota': {
+            let res = groupByKey(data, 'kota'), i = 1, c3data = [], c3names = {}
+
+            for (const key in res) {
+              c3data.push([
+                `data${i}`, res[key].length
+              ])
+
+              c3names[`data${i}`] = key
+
+              i++
+            }
+            
+            // urutkan dari terbesar ke terkecil
+            c3data.sort(function(a, b){ return b[1] - a[1] });
+
+            mod.find('.modal-body').append($(ul))
+            for (let i = 0; i < c3data.length; i++) {
+              mod.find('.modal-body ul').append(
+                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+              )
+            }
+          }
+
+          break
+
+          case 'asal sekolah': {
+            let res = groupByKey(data, 'asal_sekolah'), i = 1, c3data = [], c3names = {}
+
+            for (const key in res) {
+              c3data.push([
+                `data${i}`, res[key].length
+              ])
+
+              c3names[`data${i}`] = key
+
+              i++
+            }
+            
+            // urutkan dari terbesar ke terkecil
+            c3data.sort(function(a, b){ return b[1] - a[1] });
+
+            mod.find('.modal-body').append($(ul))
+            for (let i = 0; i < c3data.length; i++) {
+              mod.find('.modal-body ul').append(
+                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+              )
+            }
+          }
+
+          break
+
+          case 'pekerjaan orang tua': {
+            let res = groupByKey(data, 'pekerjaan_orang_tua'), i = 1, c3data = [], c3names = {}
+
+            for (const key in res) {
+              c3data.push([
+                `data${i}`, res[key].length
+              ])
+
+              c3names[`data${i}`] = key
+
+              i++
+            }
+            
+            // urutkan dari terbesar ke terkecil
+            c3data.sort(function(a, b){ return b[1] - a[1] });
+
+            mod.find('.modal-body').append($(ul))
+            for (let i = 0; i < c3data.length; i++) {
+              mod.find('.modal-body ul').append(
+                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+              )
+            }
+          }
+
+          break
+
+          case 'jarak': {
+            let temp = [], c3data = [], c3names = {}
+            
+            for (let i = 0; i < data.length; i++) {
+              if(data[i].gps.trim() != ''){
+                let gps = data[i].gps.split(', '),
+                jarak = calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1)
+
+                // bagi range jarak 0 - 10, 10 - 50, 50 - 100, dst max 500
+                let range = ''
+
+                if(jarak < 10){ range = '0-10 km' }
+                else if(jarak >= 10 && jarak < 50){ range = '10-50 km' }
+                else if(jarak >= 50 && jarak < 100){ range = '50-100 km' }
+                else if(jarak >= 100 && jarak < 150){ range = '100-150 km' }
+                else if(jarak >= 150 && jarak < 200){ range = '150-200 km' }
+                else if(jarak >= 200 && jarak < 250){ range = '200-250 km' }
+                else if(jarak >= 250 && jarak < 300){ range = '250-300 km' }
+                else if(jarak >= 300 && jarak < 350){ range = '300-350 km' }
+                else if(jarak >= 400 && jarak < 450){ range = '400-450 km' }
+                else{ range = '>450 km' }
+
+                temp.push({
+                  kota: data[i].kota,
+                  jarak: calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1),
+                  range: range
+                })
+              }
+            }
+
+            let res = groupByKey(temp, 'range'), i = 1
+
+            for (const key in res) {
+              c3data.push([
+                `data${i}`, res[key].length
+              ])
+
+              c3names[`data${i}`] = res[key][0].kota+', '+ key
+
+              i++
+            }
+
+            c3data.sort(function(a, b){ return b[1] - a[1] });
+
+            mod.find('.modal-body').append($(ul))
+            for (let i = 0; i < c3data.length; i++) {
+              mod.find('.modal-body ul').append(
+                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+              )
+            }
+          }
+        
+          default:
+            break;
+        }
+
+
+        mod.modal('show')
       }
 
 
@@ -259,6 +525,30 @@
       //   });
 
       // })
+      
+      // fungsi untuk mengukur jarak antar kordinat atau gps
+      function calcCrow(lat1, lon1, lat2, lon2){
+        var R = 6371; // km
+        var dLat = toRad(lat2-lat1);
+        var dLon = toRad(lon2-lon1);
+        var lat1 = toRad(lat1);
+        var lat2 = toRad(lat2);
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c;
+        return d;
+      }
+
+      // Converts numeric degrees to radians
+      function toRad(Value){
+          return Value * Math.PI / 180;
+      }
+
+      // console.log(
+      //   calcCrow(-8.654983, 115.195425, -8.651478, 115.195437).toFixed(1)+' km'
+      // )
       
     </script>
 

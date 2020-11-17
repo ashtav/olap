@@ -18,6 +18,8 @@ class CreateDetailDataCenter extends Migration
             $table->string('data_id');
             $table->string('nama');
             $table->string('alamat');
+            $table->string('kota');
+            $table->string('gps');
             $table->string('tanggal_lahir');
             $table->string('jenis_kelamin');
             $table->string('asal_sekolah');
