@@ -256,3 +256,16 @@ Array.prototype.random = function () {
     return this[Math.floor((Math.random()*this.length))];
 }
 
+String.prototype.ucwords = function(firstOnly){
+    let str = this.toString()
+    
+    if(firstOnly == null){
+        return str.replace(/\b[a-z]/g, (letter) => {
+            return letter.toUpperCase();
+        });
+    }else{
+        return str.toLowerCase().replace(/\b[a-z]/g, (letter) => {
+            return letter.toUpperCase();
+        });
+    }
+}

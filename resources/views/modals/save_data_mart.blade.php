@@ -11,6 +11,11 @@
             <input type="text" name="judul" class="form-control" placeholder="Inputkan judul" autocomplete="off" required>
           </div>
 
+          <div class="form-group">
+            <label for="" class="form-label">Disimpan Berdasakarn</label>
+            <input type="text" name="berdasarkan" class="form-control" readonly id="by" autocomplete="off" required>
+          </div>
+
           <div class="alert alert-info">
             <i class="la la-lg la-info-circle mr-1"></i> Hasil data ini dapat Anda download setelah disimpan.
           </div>

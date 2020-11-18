@@ -19,8 +19,7 @@
 
                         <div class="col-auto ml-auto">
                           <div class="input-group">
-                            <input type="number" min="2005" max="2050" step="1" value="" class="form-control" id="search-input">
-                            <button class="btn btn-white" type="button" onclick="_search()"> <i class="la la-lg la-search"></i> </button>
+                            <input type="text" placeholder="Cari data mart" class="form-control" id="search-input">
                           </div>
                         </div>
 
@@ -36,20 +35,26 @@
                             <tr>
                                 <th>No</th>
                                 <th>Judul</th>
+                                <th>Berdasarkan</th>
                                 <th>Tanggal</th>
                                 <th>Oleh</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                          @php $index = 1 @endphp
+                          @foreach ($dataMart as $item)
                           
                             <tr>
-                              <td> 1 </td>
-                              <td> Lorem </td>
-                              <td> 10/02/2020  </td>
-                              <td> Lorem Ipsum Name  </td>
-                              <td> <button class="btn btn-white"> <i class="la la-lg la-download mr-1"></i> Download </button> </td>
+                              <td> {{$index++}} </td>
+                              <td> {{$item->judul}} </td>
+                              <td> {{$item->berdasarkan}} </td>
+                              <td> {{date('d-m-Y', strtotime($item->created_at))}}  </td>
+                              <td> {{$item->user->nama}}  </td>
+                              <td> <button class="btn btn-white" onclick="_download(JSON.stringify({{$item}}))"> <i class="la la-lg la-download mr-1"></i> Download </button> </td>
                             </tr>
+
+                          @endforeach
                           
                         </tbody>
                       </table>
@@ -65,9 +70,12 @@
     <script>
 
       $(document).ready(function() {
-          $('#datatable').DataTable({
-            searching: false, info: false, bLengthChange: false, pageLength: 20
+          const dt = $('#datatable').DataTable({
+            info: false, bLengthChange: false, pageLength: 20,
+            'sDom': '"top"i'
           });
+
+          $('#search-input').keyup((o) => dt.search(o.currentTarget.value).draw())
       });
 
       function _new(){
@@ -77,6 +85,56 @@
       function submit(f){
         let year = $(f).find('select').val()
         moveTo(`data-mart/chart?tahun=${year}&by=jenis kelamin`)
+      }
+
+      function _download(row){
+        const data = JSON.parse(row), _data = JSON.parse(data.data)
+
+        switch (data.berdasarkan) {
+          case 'Jarak': {
+            createExcel(data.judul, {
+              filename: data.judul.replaceAll(' ','_'),
+              data: _data
+            })
+          } break;
+
+          case 'Jenis Kelamin': {
+            createExcel(data.judul, {
+              filename: data.judul.replaceAll(' ','_'),
+              data: [_data]
+            })
+          } break
+        
+          default:
+            createExcel(data.judul, {
+              filename: data.judul.replaceAll(' ','_'),
+              data: _data
+            })
+            break;
+        }
+
+      }
+
+      function createExcel(judul, params){ // fungsi untuk generate data json ke file excel
+        var data = XLSX.utils.json_to_sheet(params.data, {
+          origin: "A3"
+        })
+
+        
+
+        var wb = XLSX.utils.book_new() // make Workbook of Excel
+        XLSX.utils.book_append_sheet(wb, data, 'sheet') // sheet is name of Worksheet
+
+        XLSX.utils.sheet_add_json(wb.Sheets.sheet,
+        [{note: judul.ucwords()}],
+        {
+          skipHeader:true,
+          origin: {r:0, c:0}
+        }
+      );
+
+
+        XLSX.writeFile(wb, params.filename+'.xlsx')
       }
       
     </script>

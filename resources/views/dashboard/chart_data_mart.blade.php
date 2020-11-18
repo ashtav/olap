@@ -330,24 +330,30 @@
         }
       }
 
-      function _detailDataChart(){
+      function _detailDataChart(showModal = true){
         let mod = $('#detail-data-chart'), by = urlp('by') || 'jenis kelamin', data = dataCenter
-
         let ul = '<ul class="list-group">', li = '<li class="list-group-item">'
-
-        mod.find('.modal-body').html('')
+        
+        if(showModal){
+          mod.find('.modal-body').html('')
+        }
 
         switch (by) {
           case 'jenis kelamin': {
               let l = data.filter((e) => e.jenis_kelamin == 'L').length,
                   p = data.filter((e) => e.jenis_kelamin == 'P').length
 
-              mod.find('.modal-body').append(
-                $(ul).append(
-                  $(li).html('<b>Laki-Laki</b> <span class="float-right">'+l+'</span>'),
-                  $(li).html('<b>Perempuan</b> <span class="float-right">'+p+'</span>')
+              if(showModal){
+                mod.find('.modal-body').append(
+                  $(ul).append(
+                    $(li).html('<b>Laki-Laki</b> <span class="float-right">'+l+'</span>'),
+                    $(li).html('<b>Perempuan</b> <span class="float-right">'+p+'</span>')
+                  )
                 )
-              )
+              }else{
+                let json = {laki_laki: l, perempuan: p}
+                return JSON.stringify(json)
+              }
           }
 
           break
@@ -367,12 +373,24 @@
             
             // urutkan dari terbesar ke terkecil
             c3data.sort(function(a, b){ return b[1] - a[1] });
+            
+            if(showModal){
+              mod.find('.modal-body').append($(ul))
+              for (let i = 0; i < c3data.length; i++) {
+                mod.find('.modal-body ul').append(
+                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+                )
+              }
+            }else{
+              let json = []
+              for (let i = 0; i < c3data.length; i++) {
+                json.push({
+                  kota: c3names[c3data[i][0]],
+                  jumlah: c3data[i][1]
+                })
+              }
 
-            mod.find('.modal-body').append($(ul))
-            for (let i = 0; i < c3data.length; i++) {
-              mod.find('.modal-body ul').append(
-                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
-              )
+              return JSON.stringify(json)
             }
           }
 
@@ -393,12 +411,24 @@
             
             // urutkan dari terbesar ke terkecil
             c3data.sort(function(a, b){ return b[1] - a[1] });
+            
+            if(showModal){
+              mod.find('.modal-body').append($(ul))
+              for (let i = 0; i < c3data.length; i++) {
+                mod.find('.modal-body ul').append(
+                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+                )
+              }
+            }else{
+              let json = []
+              for (let i = 0; i < c3data.length; i++) {
+                json.push({
+                  sekolah: c3names[c3data[i][0]],
+                  jumlah: c3data[i][1]
+                })
+              }
 
-            mod.find('.modal-body').append($(ul))
-            for (let i = 0; i < c3data.length; i++) {
-              mod.find('.modal-body ul').append(
-                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
-              )
+              return JSON.stringify(json)
             }
           }
 
@@ -420,11 +450,23 @@
             // urutkan dari terbesar ke terkecil
             c3data.sort(function(a, b){ return b[1] - a[1] });
 
-            mod.find('.modal-body').append($(ul))
-            for (let i = 0; i < c3data.length; i++) {
-              mod.find('.modal-body ul').append(
-                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
-              )
+            if(showModal){
+              mod.find('.modal-body').append($(ul))
+              for (let i = 0; i < c3data.length; i++) {
+                mod.find('.modal-body ul').append(
+                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+                )
+              }
+            }else{
+              let json = []
+              for (let i = 0; i < c3data.length; i++) {
+                json.push({
+                  pekerjaan: c3names[c3data[i][0]],
+                  jumlah: c3data[i][1]
+                })
+              }
+
+              return JSON.stringify(json)
             }
           }
 
@@ -473,12 +515,26 @@
             }
 
             c3data.sort(function(a, b){ return b[1] - a[1] });
+            
+            if(showModal){
+              mod.find('.modal-body').append($(ul))
+              for (let i = 0; i < c3data.length; i++) {
+                mod.find('.modal-body ul').append(
+                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+                )
+              }
+            }else{
+              let json = []
+              for (let i = 0; i < c3data.length; i++) {
+                let kab = c3names[c3data[i][0]].replace('>','+')
 
-            mod.find('.modal-body').append($(ul))
-            for (let i = 0; i < c3data.length; i++) {
-              mod.find('.modal-body ul').append(
-                $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
-              )
+                json.push({
+                  kabupaten: kab,
+                  jumlah: c3data[i][1]
+                })
+              }
+
+              return JSON.stringify(json)
             }
           }
         
@@ -486,46 +542,8 @@
             break;
         }
 
-
         mod.modal('show')
       }
-
-
-      // $(document).ready(function(){
-
-      //   var chart = c3.generate({
-      //       bindto: '#chart',
-      //       data: {
-      //         columns: [
-      //           ['data1', 30],
-      //           ['data2', 50]
-      //         ],
-      //         // axes: {
-      //         //   data2: 'y2'
-      //         // },
-      //         types: {
-      //           data1: 'bar',
-      //           data2: 'bar' // ADD
-      //         }
-      //       },
-      //       axis: {
-      //         y: {
-      //           label: {
-      //             text: 'Jumlah Calon Siswa',
-      //             position: 'outer-middle'
-      //           }
-      //         },
-      //         // y2: {
-      //         //   show: true,
-      //         //   label: {
-      //         //     text: 'Y2 Label',
-      //         //     position: 'outer-middle'
-      //         //   }
-      //         // }
-      //       }
-      //   });
-
-      // })
       
       // fungsi untuk mengukur jarak antar kordinat atau gps
       function calcCrow(lat1, lon1, lat2, lon2){
@@ -552,8 +570,28 @@
       // )
 
       function _saveDataMart(){
+        let by = urlp('by') || 'jenis kelamin'
+
         let mod = $('#save-data-mart')
-        mod.modal('show')
+        mod.modal('show').modalConfig((f) => submit(f), {
+          title: 'Simpan Hasil'
+        })
+
+        mod.find('#by').val(by.ucwords())
+      }
+
+      function submit(f){
+        let formData = new FormData(f)
+        formData.append('data', _detailDataChart(false))
+
+        request.post('data-mart/save-result', { // request
+          data: formData, el: $(f).find('button:submit'),
+          success: (res) => {
+            new Toast().view(res.message)
+            $('#save-data-mart').modal('hide')
+            $(f)[0].reset()
+          }
+        })
       }
       
     </script>

@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/', 'DataMartController@index');
         $router->get('/chart', 'DataMartController@chart');
         $router->post('/chart', 'DataMartController@createChart');
+        $router->post('/save-result', 'DataMartController@saveResult');
     });
 
     $router->group(['prefix' => 'user'], function () use ($router) {
