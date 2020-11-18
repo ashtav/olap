@@ -69,7 +69,8 @@
               </span>
             </a>
           </li>
-
+          
+          @if (Auth::user()->level != 'marketing')
           <li class="nav-item">
             <a class="nav-link" href="{{url('user')}}" data-href="user">
               <span class="nav-link-title">
@@ -77,6 +78,7 @@
               </span>
             </a>
           </li>
+          @endif
 
           <li class="nav-item">
             <a class="nav-link" href="{{url('akun')}}" data-href="akun">

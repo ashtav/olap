@@ -22,10 +22,12 @@
                             <input type="text" placeholder="Cari data mart" class="form-control" id="search-input">
                           </div>
                         </div>
-
+                        
+                        @if (Auth::user()->level == 'admin')
                         <div class="col-auto d-print-none">
                           <button class="btn btn-primary" onclick="_new()"> <i class="la la-lg la-chart-bar mr-1"></i> Kelola Data</button>
                         </div>
+                        @endif
                       </div>
                     </div> 
 

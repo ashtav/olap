@@ -17,9 +17,11 @@
                           </h2>
                         </div>
 
+                        @if (Auth::user()->level == 'admin')
                         <div class="col-auto ml-auto d-print-none">
                           <button class="btn btn-primary" onclick="_add()"> <i class="la la-lg la-plus mr-1"></i> Tambah</button>
                         </div>
+                        @endif
                       </div>
                     </div>
 
@@ -33,7 +35,7 @@
                                 <th>Email</th>
                                 <th>No. Telepon</th>
                                 <th>Level</th>
-                                <th></th>
+                                @if (Auth::user()->level == 'admin') <th></th> @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -47,12 +49,14 @@
                               <td> {{$row->email}} </td>
                               <td> {{$row->detail->telepon}} </td>
                               <td> {{$row->level}} </td>
-                              <td>
-                                <div class="btn-group">
-                                  <button class="btn btn-white" onclick="_edit(JSON.stringify({{$row}}))"> <i class="la la-lg la-pen"></i> </button>
-                                  <button class="btn btn-danger" onclick="_delete({{$row->id}})"> <i class="la la-lg la-trash"></i> </button>
-                                </div>
-                              </td>
+                              @if (Auth::user()->level == 'admin')
+                                <td>
+                                  <div class="btn-group">
+                                    <button class="btn btn-white" onclick="_edit(JSON.stringify({{$row}}))"> <i class="la la-lg la-pen"></i> </button>
+                                    <button class="btn btn-danger" onclick="_delete({{$row->id}})"> <i class="la la-lg la-trash"></i> </button>
+                                  </div>
+                                </td>
+                                @endif
                             </tr>
                           @endforeach
                         </tbody>

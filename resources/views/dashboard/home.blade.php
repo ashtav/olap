@@ -24,6 +24,8 @@
                   </div>
 
                   <div class="row">
+
+                    @if (Auth::user()->level != 'marketing')
                     <div class="col-md-6 col-xl-4">
                       <a class="card card-link" href="{{url('user')}}">
                         <div class="card-body">
@@ -37,6 +39,7 @@
                         </div>
                       </a>
                     </div>
+                    @endif
 
                     <div class="col-md-6 col-xl-4">
                       <a class="card card-link" href="{{url('data-center')}}">
