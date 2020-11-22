@@ -23,5 +23,6 @@ class UserDetails extends Model
         'jenis_kelamin',
         'alamat',
         'telepon',
+        'foto'
     ];
 }

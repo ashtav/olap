@@ -75,20 +75,16 @@ class AuthController extends Controller
 
                     // hapus foto lama
                     if($user->foto != null){
-                        $localFileName = str_replace('/storage/','',$user->foto);
-                        $exists = Storage::disk('public')->has($localFileName);
-
-                        if($exists){
-                            Storage::disk('public')->delete($localFileName);
+                        if (file_exists( public_path() . '/images/'.$user->foto)){
+                            unlink('images/'.$user->foto);
                         }
                     }
 
                     $ext = $request->foto->extension();
                     $filename = time().'.'.$ext;
                     
-                    $request->foto->storeAs('/public', $filename);
-                    $url = Storage::url($filename);
-                    $user->update(['foto' => $url]);
+                    $request->file('foto')->move('images', $filename);
+                    $user->update(['foto' => $filename]);
 
                     return response()->json([
                         'message' => 'Foto berhasil diperbarui'

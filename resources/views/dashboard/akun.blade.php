@@ -22,12 +22,11 @@
 
                     <div class="row">
                       <div class="col-lg-5 col-md-7 col-sm-12">
-
                         <div class="card">
                           <div class="card-body">
                               <div class="row mb-3">
                                 <div class="col-auto pos-relative">
-                                  <span class="avatar avatar-lg" style="background-image: url({{ $data->detail->foto == null ? asset('assets/images/profile.png') : url($data->detail->foto)}})"></span>
+                                  <span class="avatar avatar-lg" style="background-image: url({{ $data->detail->foto == null ? asset('assets/images/profile.png') : url('images/'.$data->detail->foto)}})"></span>
                                   <div class="change-avatar-toggle" onclick="$('#foto').click()">
                                     <i class="la la-lg la-camera"></i>
                                   </div>
