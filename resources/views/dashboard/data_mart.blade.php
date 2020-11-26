@@ -92,8 +92,22 @@
       function _download(row){
         const data = JSON.parse(row), _data = JSON.parse(data.data)
 
+        function _footer(a, b){
+          _data.push(
+            {[a]: '', [b]: ''},
+            {[a]: 'Rekomendasi Strategi Marketing (Terbanyak)'},
+            {[a]: 'Promosi diarahkan ke daerah yang segmen pasarnya tinggi. Dengan kata lain promosi difokuskan ke daerah yang banyak peminatnya.'},
+
+            {[a]: '', [b]: ''},
+            {[a]: 'Rekomendasi Strategi Marketing (Paling Sedikit)'},
+            {[a]: 'Membangun awareness dengan lebih banyak promosi secara kontinyu. Menggunakan metode AIDA (Attention, Interset, Desire, Action).'}
+          )
+        }
+
         switch (data.berdasarkan) {
           case 'Jarak': {
+            _footer('kabupaten','jumlah')
+
             createExcel(data.judul, {
               filename: data.judul.replaceAll(' ','_'),
               data: _data
@@ -108,6 +122,12 @@
           } break
         
           default:
+            if(data.berdasarkan == 'Kota'){
+              _footer('kota','jumlah')
+            }else if(data.berdasarkan == 'Asal Sekolah'){
+              _footer('sekolah','jumlah')
+            }
+
             createExcel(data.judul, {
               filename: data.judul.replaceAll(' ','_'),
               data: _data
@@ -122,19 +142,16 @@
           origin: "A3"
         })
 
-        
-
         var wb = XLSX.utils.book_new() // make Workbook of Excel
         XLSX.utils.book_append_sheet(wb, data, 'sheet') // sheet is name of Worksheet
 
         XLSX.utils.sheet_add_json(wb.Sheets.sheet,
         [{note: judul.ucwords()}],
-        {
-          skipHeader:true,
-          origin: {r:0, c:0}
-        }
-      );
-
+          {
+            skipHeader:true,
+            origin: {r:0, c:0}
+          }
+        );
 
         XLSX.writeFile(wb, params.filename+'.xlsx')
       }

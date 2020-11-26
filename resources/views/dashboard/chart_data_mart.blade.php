@@ -60,8 +60,27 @@
                       <button class="btn btn-white btn-pill" onclick="_detailDataChart()">Lihat Semua</button>
                     </div>
 
+                    <div class="row" id="spk">
+                      <div class="col-md-6">
+
+                        <div class="alert alert-info my-5">
+                          <h3><i class="la la-info-circle mr-1"></i>  Rekomendasi Strategi Marketing (Terbanyak)</h3>
+                          Promosi diarahkan ke daerah yang segmen pasarnya tinggi. Dengan kata lain promosi difokuskan ke daerah yang banyak peminatnya.
+                        </div>
+
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="alert alert-warning my-5">
+                          <h3><i class="la la-info-circle mr-1"></i>  Rekomendasi Strategi Marketing (Paling Sedikit)</h3>
+                          Membangun awareness dengan lebih banyak promosi secara kontinyu. Menggunakan metode AIDA (Attention, Interset, Desire, Action)
+                        </div>
+                      </div>
+                    </div>
+
                 </div>
             </div>
+
         </div>
 
     @include('modals.confirm')
@@ -116,6 +135,13 @@
 
       function _reDrawChart(){
         let by = urlp('by') || 'jenis kelamin', data = dataCenter
+
+        $('#spk').hide()
+
+        let viewIf = ['kota','asal sekolah','jarak']
+        if(viewIf.indexOf(by) > -1){
+          $('#spk').show()
+        }
 
         switch (by) {
           // tampilkan berdasarkan jenis kelamin
