@@ -4,3 +4,96 @@
 
     - pada routes/web.php -> use App\Http\Controllers\NamaController -> panggil nama controller kamu
     - atau pada App\Providers\RouteServiceProvider -> ganti ->namespace($this->namespace) menjadi ->namespace('App\Http\Controllers')
+
+
+--- PENJELASAN SOURCE CODE
+
+Syarat untuk memahami semua code pada project ini adalah minimal kita faham dasar-dasar tentang HTML, CSS, JAVASCRIPT, DAN PHP
+berikut adalah link untuk mempelajarinya, https://www.w3schools.com/
+
+--- POINT PROJECT
+
+1. project ini dibuat dengan bahasa pemrograman php untuk servernya (pemrosesan)
+2. database yang digunakan adalah mysql
+3. untuk desain tampilan menggunakan html, css, dan javascript
+4. untuk menghubungkan tampilan dengan server (php) menggunakan javascript, jquery, ajax
+5. project ini menggunakan framework php bernama laravel
+
+--- LARAVEL
+
+Hal yang penting untuk kita ketahui tentang laravel dalam penmbuatan app ini adalah sebagai berikut
+
+1. folder yang perlu kita fahami adalah
+
+    - app/Http/Controllers -> tempat dimana data diproses
+    - app/Models -> file yang menghubungkan controller dengan database
+    - routes/web.php -> file yang mengatur alamat url pada project kita
+    - public -> tempat menyimpan assets (files, gambar, dll)
+    - resources/view -> tampilan atau desain app kita
+
+2. file .env -> untuk mengatur atau konfigurasi database, email (jika digunakan), dll
+
+--- PENJELASAN SOURCE CODE
+
+Karena banyak kode yang dipakai berulang maka penjelasannya kita buat disini,
+kita akan bagi penjelasannya per-bahasa pemrograman yang kita pakai
+
+1. HTML
+    pada html kita sering menggunakan form untuk mengirim data, biasanya kodenya seperti ini
+    <form onsubmit="return fungsiKirimData(this)">
+
+    fungsiKirimData -> fungsi yang kita buat untuk mengirim data,
+    (this) -> adalah form itu sendiri
+
+    nah, kode onsubmit="return fungsiKirimData(this)" adalah kode javascript yang disematkan pada html,
+    maka kita akan proses fungsi itu di javascript, contohnya adalah seperti dibawah ini.
+
+2. JAVASCRIPT
+    lanjut dari penjelasan di atas, kita buat fungsi bernama fungsiKirimData (bebas terserah kita),
+    kodenya seperti ini...
+
+    function fungsiKirimData(f){
+        // nah disini kita akan menggunakan ajax seperti ini
+
+        $.ajax({
+            url: 'blabla.com/tambah-user', // routes/web yang kita buat di laravel
+            type: 'post', // post (tambah), put (edit), get (baca), delete (hapus)
+            data: new FormData($(f)[0]), // data yang ada pada form kita
+            contentType: false, // set false jika menggunakan FormData
+            progressData: false, // set false jika menggunakan FormData
+            success: function(hasil){ // jika berhasil maka kita dapat data dari hasil, selanjutnya terserah kita mau diapakan
+
+            }, error: function(hasil){ // begitu juga kalau error
+
+            }
+        })
+
+        return false // untuk mencegah refresh pada form, kita bisa atur refreshnya pada fungsi success di atas
+    }
+
+    nah versi ajax diatas sudah disediakan versi yang lebih pendek yaitu sebagai berikut
+
+    function fungsiKirimData(f){
+        request.post('blabla.com/tambah-user', {
+            data: new FormData($(f)[0]), el: $(f).find('button:submit'),
+            success: (res) => {
+                new Toast().view(res.message)
+                moveTo('dashboard')
+            }
+        })
+
+        return false
+    }
+
+    penjelasanya sama seperti di atas, perbedaannya disini ada el, el artinya element (button, input, form, dll)
+    jika kita ingin menambahkan animasi loading saat request (post, put, get, delete), kita bisa set el
+
+3. PHP (LARAVEL)
+
+
+
+    
+
+
+
+
