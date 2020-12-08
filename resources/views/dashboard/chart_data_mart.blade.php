@@ -65,7 +65,7 @@
 
                         <div class="alert alert-info my-5">
                           <h3><i class="la la-info-circle mr-1"></i>  Rekomendasi Strategi Marketing (Terbanyak)</h3>
-                          Promosi diarahkan ke daerah yang segmen pasarnya tinggi. Dengan kata lain promosi difokuskan ke daerah yang banyak peminatnya.
+                          Promosi diarahkan ke <span class="place">daerah</span> yang segmen pasarnya tinggi. Dengan kata lain promosi difokuskan ke <span class="place">daerah</span> yang banyak peminatnya.
                         </div>
 
                       </div>
@@ -75,6 +75,20 @@
                           <h3><i class="la la-info-circle mr-1"></i>  Rekomendasi Strategi Marketing (Paling Sedikit)</h3>
                           Membangun awareness dengan lebih banyak promosi secara kontinyu. Menggunakan metode AIDA (Attention, Interset, Desire, Action)
                         </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+
+                        <div class="card">
+                          <div class="card-body">
+                            <table class="table table-striped" id="table">
+                              <tbody></tbody>
+                            </table>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
 
@@ -137,17 +151,19 @@
         let by = urlp('by') || 'jenis kelamin', data = dataCenter
 
         $('#spk').hide()
+        $('#table').find('tbody').html('')
 
-        let viewIf = ['kota','asal sekolah','jarak']
+        let viewIf = ['kota','asal sekolah']
         if(viewIf.indexOf(by) > -1){
           $('#spk').show()
+          $('.place').html(viewIf[viewIf.indexOf(by)].replace('asal ',''))
         }
 
         switch (by) {
           // tampilkan berdasarkan jenis kelamin
           case 'jenis kelamin': {
-              let l = data.filter((e) => e.jenis_kelamin == 'L').length,
-                  p = data.filter((e) => e.jenis_kelamin == 'P').length
+              let l = data.filter((e) => e.jenis_kelamin == 'Laki-laki' || e.jenis_kelamin == 'L').length,
+                  p = data.filter((e) => e.jenis_kelamin == 'Perempuan' || e.jenis_kelamin == 'P').length
               
               drawChart({
                 data: {
@@ -169,26 +185,67 @@
                   },
                 }
               })
+
+              // set table
+              $('#table').find('tbody').append(
+                `
+                <tr>
+                  <td width="30">1.</td>
+                  <td>Laki-laki</td>
+                  <td>${l}</td>
+                </tr>
+                <tr>
+                  <td width="30">2.</td>
+                  <td>Perempuan</td>
+                  <td>${p}</td>
+                </tr>
+                `
+              )
             }
             
             break
 
           case 'kota': {
-            let res = groupByKey(data, 'kota'), i = 1, c3data = [], c3names = {}
+            let yAxisValue = [0]
+            let res = groupByKey(data, 'kota'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
 
             for (const key in res) {
               c3data.push([
                 `data${i}`, res[key].length
               ])
 
+              yAxisValue.push(res[key].length)
+
               c3names[`data${i}`] = key
 
               i++
-              if(i == 16) break // ambil 20 data saja
+              if(i == 16) break // ambil 15 data saja
+            }
+
+            for (const key in res) {
+              c3data1.push([
+                `data${i}`, res[key].length
+              ])
+              c3names1[`data${i}`] = key
+              i++
             }
             
             // urutkan dari terbesar ke terkecil
             c3data.sort(function(a, b){ return b[1] - a[1] });
+            c3data1.sort(function(a, b){ return b[1] - a[1] });
+
+            let n = 1
+            c3data1.forEach((v) => {
+              $('#table').find('tbody').append(
+                  `
+                  <tr>
+                    <td width="30">${n++}.</td>
+                    <td>${c3names1[v[0]]}</td>
+                    <td>${v[1]}</td>
+                  </tr>
+                  `
+                )
+            })
 
             drawChart({
               data: {
@@ -198,6 +255,9 @@
               },
               axis: {
                 y: {
+                  tick: {
+                    values: yAxisValue
+                  },
                   label: {
                     text: 'Jumlah Kota',
                     position: 'outer-middle'
@@ -211,21 +271,47 @@
           
             // tampilkan berdasarkan asal sekolah
           case 'asal sekolah': {
-              let res = groupByKey(data, 'asal_sekolah'), i = 1, c3data = [], c3names = {}
+
+              let yAxisValue = [0]
+              let res = groupByKey(data, 'asal_sekolah'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
 
               for (const key in res) {
                 c3data.push([
                   `data${i}`, res[key].length
                 ])
 
+                yAxisValue.push(res[key].length)
+
                 c3names[`data${i}`] = key
 
                 i++
                 if(i == 16) break // ambil 20 data saja
               }
+
+              for (const key in res) {
+                c3data1.push([
+                  `data${i}`, res[key].length
+                ])
+                c3names1[`data${i}`] = key
+                i++
+              }
               
               // urutkan dari terbesar ke terkecil
               c3data.sort(function(a, b){ return b[1] - a[1] });
+              c3data1.sort(function(a, b){ return b[1] - a[1] });
+
+              let n = 1
+              c3data1.forEach((v) => {
+                $('#table').find('tbody').append(
+                    `
+                    <tr>
+                      <td width="30">${n++}.</td>
+                      <td>${c3names1[v[0]]}</td>
+                      <td>${v[1]}</td>
+                    </tr>
+                    `
+                  )
+              })
 
               drawChart({
                 data: {
@@ -235,6 +321,9 @@
                 },
                 axis: {
                   y: {
+                    tick: {
+                      values: yAxisValue //from({length: (c3data[0][1] + 1)}, (_, i) => i)
+                    },
                     label: {
                       text: 'Jumlah Sekolah',
                       position: 'outer-middle'
@@ -247,7 +336,8 @@
             break
           
           case 'pekerjaan orang tua': {
-              let res = groupByKey(data, 'pekerjaan_orang_tua'), i = 1, c3data = [], c3names = {}
+              let yAxisValue = [0]
+              let res = groupByKey(data, 'pekerjaan_orang_tua'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
               delete res[''] // hapus nama pekerjaan yang kosong
 
               for (const key in res) {
@@ -257,15 +347,38 @@
                     `data${i}`, res[key].length
                   ])
 
+                  yAxisValue.push(res[key].length)
                   c3names[`data${i}`] = key
 
                   i++
                   if(i == 16) break // ambil 15 data saja
                 }
               }
+
+              for (const key in res) {
+                c3data1.push([
+                  `data${i}`, res[key].length
+                ])
+                c3names1[`data${i}`] = key
+                i++
+              }
               
               // urutkan dari terbesar ke terkecil
               c3data.sort(function(a, b){ return b[1] - a[1] });
+              c3data1.sort(function(a, b){ return b[1] - a[1] });
+
+              let n = 1
+              c3data1.forEach((v) => {
+                $('#table').find('tbody').append(
+                    `
+                    <tr>
+                      <td width="30">${n++}.</td>
+                      <td>${c3names1[v[0]]}</td>
+                      <td>${v[1]}</td>
+                    </tr>
+                    `
+                  )
+              })
 
               drawChart({
                 data: {
@@ -275,6 +388,9 @@
                 },
                 axis: {
                   y: {
+                    tick: {
+                      values: yAxisValue
+                    },
                     label: {
                       text: 'Jumlah Pekerjaan',
                       position: 'outer-middle'
@@ -287,7 +403,7 @@
             break
 
           case 'jarak': {
-            let temp = [], c3data = [], c3names = {}
+            let temp = [], c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
             
             for (let i = 0; i < data.length; i++) {
               if(data[i].gps.trim() != ''){
@@ -316,6 +432,7 @@
               }
             }
 
+            let yAxisValue = [0]
             let res = groupByKey(temp, 'range'), i = 1
 
               for (const key in res) {
@@ -323,14 +440,39 @@
                   `data${i}`, res[key].length
                 ])
 
+                yAxisValue.push(res[key].length)
+
                 c3names[`data${i}`] = res[key][0].kota+', '+ key
 
                 i++
                 if(i == 16) break // ambil 15 data saja
               }
+
+              for (const key in res) {
+                c3data1.push([
+                  `data${i}`, res[key].length
+                ])
+                c3names1[`data${i}`] = res[key][0].kota+', '+ key
+
+                i++
+              }
               
               // urutkan dari terbesar ke terkecil
               c3data.sort(function(a, b){ return b[1] - a[1] });
+              c3data1.sort(function(a, b){ return b[1] - a[1] });
+
+              let n = 1
+              c3data1.forEach((v) => {
+                $('#table').find('tbody').append(
+                    `
+                    <tr>
+                      <td width="30">${n++}.</td>
+                      <td>${c3names1[v[0]]}</td>
+                      <td>${v[1]}</td>
+                    </tr>
+                    `
+                  )
+              })
 
               drawChart({
                 data: {
@@ -340,6 +482,9 @@
                 },
                 axis: {
                   y: {
+                    tick: {
+                      values: yAxisValue
+                    },
                     label: {
                       text: 'Jumlah Siswa',
                       position: 'outer-middle'

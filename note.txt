@@ -17,7 +17,7 @@ berikut adalah link untuk mempelajarinya, https://www.w3schools.com/
 2. database yang digunakan adalah mysql
 3. untuk desain tampilan menggunakan html, css, dan javascript
 4. untuk menghubungkan tampilan dengan server (php) menggunakan javascript, jquery, ajax
-5. project ini menggunakan framework php bernama laravel
+5. project ini menggunakan framework php bernama laravel (versi 8)
 
 --- LARAVEL
 
@@ -71,7 +71,7 @@ kita akan bagi penjelasannya per-bahasa pemrograman yang kita pakai
         return false // untuk mencegah refresh pada form, kita bisa atur refreshnya pada fungsi success di atas
     }
 
-    nah versi ajax diatas sudah disediakan versi yang lebih pendek yaitu sebagai berikut
+    nah versi ajax di atas sudah disediakan versi yang lebih pendek yaitu sebagai berikut
 
     function fungsiKirimData(f){
         request.post('blabla.com/tambah-user', {
@@ -89,6 +89,29 @@ kita akan bagi penjelasannya per-bahasa pemrograman yang kita pakai
     jika kita ingin menambahkan animasi loading saat request (post, put, get, delete), kita bisa set el
 
 3. PHP (LARAVEL)
+
+    fungsi dasar dari sebuah program (project kita) adalah CRUD (create, read, update, delete)
+    pada laravel, untuk create data menggunakan kode NamaModelKita::create($dataKita), contoh:
+
+        User::create($dataUser)
+    
+    begitu juga untuk mengubah data, NamaModelKita::find($idDatanya)->update($dataKita), contoh:
+
+        User::find(1)->update($dataUser)
+
+        1 merupakan id dari user itu, jika kita tidak menggunakan id, misal kita gunakan email sebagai key
+        untuk mengedit data user maka gunakan where sebagai pengganti find, contoh:
+
+        User::where(['email' => 'bla@gmail.com'])->update($dataUser)
+
+    untuk menghapus data gunakan kode, NamaModelKita::find($idDatanya)->delete()
+    atau User::where(['email' => 'bla@gmail.com])->delete()
+
+    untuk mengambil data gunakan kode, NamaModelKita::get() atau NamaModelKita::latest()->get() untuk mengambil data dari terakhir - pertama
+    untuk mengambil data tertentu gunakan NamaModelKita::find(1)->first() untuk mengambil satu data saja, find bisa diganti where seperti contoh di atas
+
+    
+    
 
 
 

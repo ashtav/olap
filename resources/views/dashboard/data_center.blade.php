@@ -167,7 +167,46 @@
                 return
               }
 
-              files = objs
+              // rapikan data "capitalize each word"
+              let objs1 = [], setUppercase = ['asal_sekolah','pekerjaan_orang_tua'],
+              pattern = [
+                // disini kita isi apa aja yang mau kita uppercase
+                'sma','smk','pns'
+              ]
+
+              objs.forEach(o => {
+                let _o = {}
+                Object.entries(o).map(([k, v]) => 
+                  _o[k] = k == 'jenis_kelamin' ? v == 'L' ? 'Laki-laki' : 'Perempuan' 
+                      : o[k].toString().ucwords(true))
+
+                objs1.push(_o)
+              })
+
+              // set huruf tertentu yang ingin di uppercase
+              let fixData = []
+
+              objs1.forEach(o => {
+                let _o = {}
+                
+                Object.entries(o).map(([k, v]) => {
+                  if(setUppercase.indexOf(k) > -1){
+                    pattern.forEach(p => {
+                      let vlower = v.toString().toLowerCase()
+
+                      if(vlower.includes(p)){
+                        _o[k] = vlower.replaceAll(p, p.toString().toUpperCase())
+                      }
+                    })
+                  }else{
+                    _o[k] = v
+                  }
+                })
+
+                fixData.push(_o)
+              })
+
+              files = fixData
             })
 
         }
