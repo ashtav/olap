@@ -190,6 +190,8 @@
                 let _o = {}
                 
                 Object.entries(o).map(([k, v]) => {
+                  _o[k] = v
+
                   if(setUppercase.indexOf(k) > -1){
                     pattern.forEach(p => {
                       let vlower = v.toString().toLowerCase()
@@ -198,13 +200,13 @@
                         _o[k] = vlower.replaceAll(p, p.toString().toUpperCase())
                       }
                     })
-                  }else{
-                    _o[k] = v
                   }
                 })
 
                 fixData.push(_o)
               })
+
+              console.log(fixData)
 
               files = fixData
             })
