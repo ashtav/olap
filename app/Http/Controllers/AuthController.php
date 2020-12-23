@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
 
     public function index(){
-        $data = User::with('detail')->find(Auth::id())->first();
+        $data = User::with('detail')->find(Auth::id());
         return view('dashboard.akun', compact('data'));
     }
 

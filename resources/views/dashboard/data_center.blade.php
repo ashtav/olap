@@ -174,10 +174,19 @@
                 'sma','smk','pns'
               ]
 
+              // ganti huruf atau kata tertentu dengan jenis kelamin yang benar,
+              // isi disini kata apa saja yang ingin kita ganti
+
+              let replaceGenderM = [ // untuk laki-laki
+                'L','Laki'
+              ], replaceGenderF = [ // untuk perempuan
+                'P','Cewe'
+              ]
+
               objs.forEach(o => {
                 let _o = {}
                 Object.entries(o).map(([k, v]) => 
-                  _o[k] = k == 'jenis_kelamin' ? v == 'L' ? 'Laki-laki' : 'Perempuan' 
+                  _o[k] = k == 'jenis_kelamin' ? replaceGenderM.includes(v) ? 'Laki-laki' : replaceGenderF.includes(v) ? 'Perempuan' : v
                       : o[k].toString().ucwords(true))
 
                 objs1.push(_o)

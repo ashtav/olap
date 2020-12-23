@@ -186,7 +186,9 @@
                 }
               })
 
-              // set table
+              if(l > p){
+
+                // set table
               $('#table').find('tbody').append(
                 `
                 <tr>
@@ -201,6 +203,29 @@
                 </tr>
                 `
               )
+
+              }else{
+
+                // set table
+              $('#table').find('tbody').append(
+                `
+                <tr>
+                  <td width="30">1.</td>
+                  <td>Perempuan</td>
+                  <td>${p}</td>
+                </tr>
+                <tr>
+                  <td width="30">2.</td>
+                  <td>Laki-laki</td>
+                  <td>${l}</td>
+                </tr>
+                
+                `
+              )
+
+              }
+
+              
             }
             
             break
