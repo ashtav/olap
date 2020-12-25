@@ -168,10 +168,10 @@
               }
 
               // rapikan data "capitalize each word"
-              let objs1 = [], setUppercase = ['asal_sekolah','pekerjaan_orang_tua'],
+              let objs1 = [], setUppercase = ['asal_sekolah','pekerjaan_orang_tua','alamat'],
               pattern = [
                 // disini kita isi apa aja yang mau kita uppercase
-                'sma','smk','pns'
+                'sma','smk','pns','ntt'
               ]
 
               // ganti huruf atau kata tertentu dengan jenis kelamin yang benar,
@@ -206,7 +206,7 @@
                       let vlower = v.toString().toLowerCase()
 
                       if(vlower.includes(p)){
-                        _o[k] = vlower.replaceAll(p, p.toString().toUpperCase())
+                        _o[k] = k == 'alamat' ? vlower.replaceAll(p, p.toString().toUpperCase()).ucwords() : vlower.replaceAll(p, p.toString().toUpperCase()).ucwords()
                       }
                     })
                   }

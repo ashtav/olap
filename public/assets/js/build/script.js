@@ -259,11 +259,11 @@ Array.prototype.random = function () {
 String.prototype.ucwords = function(firstOnly){
     let str = this.toString()
     
-    if(firstOnly == null){
+    if(firstOnly == null){ // all uppercase
         return str.replace(/\b[a-z]/g, (letter) => {
             return letter.toUpperCase();
         });
-    }else{
+    }else{ // first uppercase
         return str.toLowerCase().replace(/\b[a-z]/g, (letter) => {
             return letter.toUpperCase();
         });

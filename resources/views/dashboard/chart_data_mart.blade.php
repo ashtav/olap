@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-6" id="row">
 
                         <div class="card">
                           <div class="card-body">
@@ -102,6 +102,12 @@
     @include('modals.save_data_mart')
       
     <script>
+
+function uniq(a) {
+    return a.sort().filter(function(item, pos, ary) {
+        return !pos || item != ary[pos - 1];
+    });
+}
 
       let stiparGPS = [-8.630368, 115.176738], dataCenter = []
 
@@ -147,11 +153,20 @@
         });
       }
 
+      
+
       function _reDrawChart(){
         let by = urlp('by') || 'jenis kelamin', data = dataCenter
 
         $('#spk').hide()
         $('#table').find('tbody').html('')
+
+        if(by == 'jarak'){
+          $('#row').attr('class','col-md-12')
+        }else{
+          $('#row').attr('class','col-md-6')
+        }
+
 
         let viewIf = ['kota','asal sekolah']
         if(viewIf.indexOf(by) > -1){
@@ -465,19 +480,31 @@
                   `data${i}`, res[key].length
                 ])
 
+                let cities = []
+
                 yAxisValue.push(res[key].length)
 
-                c3names[`data${i}`] = res[key][0].kota+', '+ key
+                res[key].forEach(c => cities.push(c.kota))
+
+                // c3names[`data${i}`] = uniq(cities).toString()+', '+ key
+                c3names[`data${i}`] = key+' ('+(uniq(cities).toString().replace(/,(\s+)?$/, '').replaceAll(',',', '))+')'
 
                 i++
-                if(i == 16) break // ambil 15 data saja
+                // if(i == 16) break // ambil 15 data saja
               }
 
               for (const key in res) {
                 c3data1.push([
                   `data${i}`, res[key].length
                 ])
-                c3names1[`data${i}`] = res[key][0].kota+', '+ key
+
+                let cities = []
+
+                res[key].forEach(c => cities.push(c.kota))
+
+
+                // c3names1[`data${i}`] = res[key][0].kota+', '+ key
+                c3names1[`data${i}`] = key+' ('+(uniq(cities).toString().replace(/,(\s+)?$/, '').replaceAll(',',', '))+')'
 
                 i++
               }
@@ -573,6 +600,7 @@
             if(showModal){
               mod.find('.modal-body').append($(ul))
               for (let i = 0; i < c3data.length; i++) {
+
                 mod.find('.modal-body ul').append(
                   $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
                 )
@@ -670,7 +698,7 @@
 
           case 'jarak': {
             let temp = [], c3data = [], c3names = {}
-            
+
             for (let i = 0; i < data.length; i++) {
               if(data[i].gps.trim() != ''){
                 let gps = data[i].gps.split(', '),
@@ -705,7 +733,12 @@
                 `data${i}`, res[key].length
               ])
 
-              c3names[`data${i}`] = res[key][0].kota+', '+ key
+              let cities = []
+              res[key].forEach(c => cities.push(c.kota))
+
+
+              // c3names[`data${i}`] = res[key][0].kota+', '+ key
+              c3names[`data${i}`] = key+' ('+(uniq(cities).toString().replace(/,(\s+)?$/, '').replaceAll(',',', '))+')'
 
               i++
             }
