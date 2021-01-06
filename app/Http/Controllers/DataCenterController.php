@@ -25,11 +25,14 @@ class DataCenterController extends Controller
             $input['nama_file'] = ucwords($input['nama_file']); // set ucwords pada nama file
 
             $dc = DataCenter::where(['tahun' => $input['tahun']]);
-            $data = null;
 
-            if($dc->count() < 1){
-                $data = DataCenter::create($input); // simpan
+            // UPDATE : jika data dengan tahun yang sama sudah ada pada database -> hapus
+            if($dc->count() > 0){
+                DataCenter::where(['tahun' => $input['tahun']])->forceDelete();
+                DetailDataCenter::where(['data_id' => $dc->id])->forceDelete(); // hapus detail data center
             }
+
+            $data = DataCenter::create($input);
 
             $input = $request->only('data'); // get hanya property data
             foreach (json_decode($input['data']) as $key => $d) { // looping
