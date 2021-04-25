@@ -275,6 +275,7 @@
             data.forEach(e => {
               alumni.push({
                 tahun: e.tahun_lulus,
+                nim: e.mahasiswa.nim,
                 nama: e.mahasiswa.nama_mahasiswa
               })
             })
@@ -386,10 +387,12 @@
               }
             }else{
               let json = []
-              for (let i = 0; i < c3data.length; i++) {
+
+              for (const key in res) {
                 json.push({
-                  kota: c3names[c3data[i][0]],
-                  jumlah: c3data[i][1]
+                  nim: res[key][0].nim,
+                  nama_mahasiswa: res[key][0].nama,
+                  kehadiran: res[key][0].kehadiran
                 })
               }
 
@@ -424,10 +427,12 @@
               }
             }else{
               let json = []
-              for (let i = 0; i < c3data.length; i++) {
+
+              for (const key in res) {
                 json.push({
-                  sekolah: c3names[c3data[i][0]],
-                  jumlah: c3data[i][1]
+                  nim: res[key][0].nim,
+                  nama_mahasiswa: res[key][0].nama,
+                  tahun_kelulusan: res[key][0].tahun
                 })
               }
 

@@ -27,7 +27,7 @@
             <div class="col-auto d-print-none">
               <button class="btn btn-primary" onclick="_new()"> <i class="la la-lg la-chart-bar mr-1"></i> Kelola
                 Data</button>
-              <a href="{{url('/data-mart-mahasiswa')}}" class="btn btn-outline-primary"> <i
+              <a href="{{url('/data-mart/chart-mahasiswa?by=absensi')}}" class="btn btn-outline-primary"> <i
                   class="la la-lg la-chart-bar mr-1"></i> Kelola Data Mahasiswa</a>
             </div>
             @endif

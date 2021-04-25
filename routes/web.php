@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/', 'DataCenterMahasiswaController@index1');
         $router->get('/chart', 'DataMartController@chart1');
         $router->post('/chart', 'DataMartController@createChart1');
-        $router->post('/save-result', 'DataMartController@saveResult');
+        $router->post('/save-result', 'DataMartController@saveResult1');
     });
 
     $router->group(['prefix' => 'data-absensi'], function () use ($router) {

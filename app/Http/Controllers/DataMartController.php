@@ -79,4 +79,5 @@ class DataMartController extends Controller
             return response()->json(['error' => $th->getMessage()], 400); // pesan gagal
         }
     }
+
 }
