@@ -25,4 +25,9 @@ class DataCenterMahasiswaController extends Controller
         SemesterModel::truncate();
         AlumniModel::truncate();
     }
+
+    public function index1(){
+        $dataMart = [];
+        return view('dashboard.data_mart_absensi', compact('dataMart'));
+    }
 }

@@ -19,4 +19,8 @@ class AbsensiModel extends Model
         'jumlah_kehadiran',
         'semester',
     ];
+
+    public function mahasiswa(){
+        return $this->belongsTo('App\Models\MahasiswaModel', 'id_mahasiswa');
+    }
 }

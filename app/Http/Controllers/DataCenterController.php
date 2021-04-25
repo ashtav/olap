@@ -151,6 +151,7 @@ class DataCenterController extends Controller
             $k = [$d->kps1,$d->kps2,$d->kps3,$d->kps4,$d->kps5,$d->kps6,$d->kps7,$d->kps8];
 
             $lamaK = 0;
+            // $jmlK = (array_sum($k) / 800) * 100;
 
             for ($i=0; $i < count($k); $i++) {
                 $getSms = SemesterModel::where(['semester' => ($i + 1)])->first();

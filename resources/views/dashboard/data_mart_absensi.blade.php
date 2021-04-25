@@ -13,7 +13,7 @@
           <div class="row align-items-center">
             <div class="col-auto">
               <h2 class="page-title">
-                Data Mart
+                Data Mart Mahasiswa & Alumni
               </h2>
             </div>
 
@@ -25,10 +25,9 @@
 
             @if (Auth::user()->level == 'admin')
             <div class="col-auto d-print-none">
-              <button class="btn btn-primary" onclick="_new()"> <i class="la la-lg la-chart-bar mr-1"></i> Kelola
-                Data</button>
-              <a href="{{url('/data-mart-mahasiswa')}}" class="btn btn-outline-primary"> <i
-                  class="la la-lg la-chart-bar mr-1"></i> Kelola Data Mahasiswa</a>
+              <a href="{{url('/data-mart/chart-mahasiswa?by=absensi')}}" class="btn btn-primary" onclick="_new()"> <i
+                  class="la la-lg la-chart-bar mr-1"></i> Kelola
+                Data</a>
             </div>
             @endif
           </div>
@@ -70,7 +69,7 @@
     </div>
   </div>
 
-  @include('modals.form_pilih_tahun')
+  {{-- @include('modals.form_pilih_tahun') --}}
   @include('modals.confirm')
 
   <script>

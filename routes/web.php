@@ -39,7 +39,15 @@ Route::group(['middleware' => 'auth'], function () use ($router) {
     $router->group(['prefix' => 'data-mart'], function () use ($router) {
         $router->get('/', 'DataMartController@index');
         $router->get('/chart', 'DataMartController@chart');
+        $router->get('/chart-mahasiswa', 'DataMartController@chart1');
         $router->post('/chart', 'DataMartController@createChart');
+        $router->post('/save-result', 'DataMartController@saveResult');
+    });
+
+    $router->group(['prefix' => 'data-mart-mahasiswa'], function () use ($router) {
+        $router->get('/', 'DataCenterMahasiswaController@index1');
+        $router->get('/chart', 'DataMartController@chart1');
+        $router->post('/chart', 'DataMartController@createChart1');
         $router->post('/save-result', 'DataMartController@saveResult');
     });
 

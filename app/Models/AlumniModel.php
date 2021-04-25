@@ -19,4 +19,8 @@ class AlumniModel extends Model
         'lama_kuliah',
         'tahun_lulus'
     ];
+
+    public function mahasiswa(){
+        return $this->belongsTo('App\Models\MahasiswaModel', 'id_mahasiswa');
+    }
 }
