@@ -93,21 +93,23 @@ class DataCenterController extends Controller
     }
 
     public function storeAbsensi(Request $request){
-        // foreach (json_decode($request->data) as $key => $d) { // looping
-        //     TempModel::create([
-        //         'nim' => $d->nim,
-        //         'nama_mahasiswa' => $d->nama_mahasiswa,
-        //         'jenis_kelamin' => $d->jenis_kelamin,
-        //         'kps1' => $d->kps1,
-        //         'kps2' => $d->kps2,
-        //         'kps3' => $d->kps3,
-        //         'kps4' => $d->kps4,
-        //         'kps5' => $d->kps5,
-        //         'kps6' => $d->kps6,
-        //         'kps7' => $d->kps7,
-        //         'kps8' => $d->kps8
-        //     ]); // simpan
-        // }
+        TempModel::truncate();
+
+        foreach (json_decode($request->data) as $key => $d) { // looping
+            TempModel::create([
+                'nim' => $d->nim,
+                'nama_mahasiswa' => $d->nama_mahasiswa,
+                'jenis_kelamin' => $d->jenis_kelamin,
+                'kps1' => $d->kps1,
+                'kps2' => $d->kps2,
+                'kps3' => $d->kps3,
+                'kps4' => $d->kps4,
+                'kps5' => $d->kps5,
+                'kps6' => $d->kps6,
+                'kps7' => $d->kps7,
+                'kps8' => $d->kps8
+            ]); // simpan
+        }
 
         $data = TempModel::get();
 
@@ -190,10 +192,6 @@ class DataCenterController extends Controller
             ];
             // SemesterModel::create($smsInput);
         }
-
-
-
-
 
         return response()->json([
             'data' => $data,
