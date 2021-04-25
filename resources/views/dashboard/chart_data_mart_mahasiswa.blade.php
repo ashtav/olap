@@ -33,7 +33,7 @@
         </div>
 
         <div class="alert alert-info" style="display: inline-block">
-          <i class="la la-lg la-file-alt mr-1"></i> Diambil dari data tahun <b>{{app('request')->input('tahun')}}</b>
+          <i class="la la-lg la-file-alt mr-1"></i> Diambil dari data
           dengan jumlah data sebanyak <b id="jumlahData">-</b>
         </div>
 
@@ -112,13 +112,13 @@
     });
 }
 
-      let stiparGPS = [-8.630368, 115.176738], dataCenter = []
+      let stiparGPS = [-8.630368, 115.176738], dataCenter = [], dataResult = []
 
       function _select(e){
         let tahun = urlp('tahun')
         // window.history.pushState('page2', 'Title', `/data-mart/chart-mahasiswa?tahun=${tahun}&by=${e.value}`);
         window.history.pushState('page2', 'Title', `/data-mart/chart-mahasiswa?by=${e.value}`);
-        _reDrawChart()
+        initChart()
       }
       
       function initChart(){
@@ -170,8 +170,6 @@
           $('.place').html(viewIf[viewIf.indexOf(by)].replace('asal ',''))
         }
 
-        // initChart()
-
         switch (by) {
           case 'absensi': {
 
@@ -202,10 +200,10 @@
               })
             }
 
+            dataResult = absensi
 
             let yAxisValue = [0]
             let res = groupByKey(absensi, 'nama'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
-
 
             for (const key in res) {
 
@@ -224,7 +222,7 @@
 
             for (const key in res) {
               c3data1.push([
-                `data${i}`, res[key][0].kehadiran+'%'
+                `data${i}`, res[key][0].kehadiran
               ])
               c3names1[`data${i}`] = key
               i++
@@ -241,7 +239,7 @@
                   <tr>
                     <td width="30">${n++}.</td>
                     <td>${c3names1[v[0]]}</td>
-                    <td>${v[1]}</td>
+                    <td>${v[1]}%</td>
                   </tr>
                   `
                 )
@@ -272,14 +270,23 @@
             // tampilkan berdasarkan asal sekolah
           case 'alumni': {
 
-            console.log(data)
+            let alumni = []
+
+            data.forEach(e => {
+              alumni.push({
+                tahun: e.tahun_lulus,
+                nama: e.mahasiswa.nama_mahasiswa
+              })
+            })
+
+            dataResult = alumni
 
               let yAxisValue = [0]
-              let res = groupByKey(data, 'asal_sekolah'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
+              let res = groupByKey(alumni, 'nama'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
 
               for (const key in res) {
                 c3data.push([
-                  `data${i}`, res[key].length
+                  `data${i}`, res[key][0].tahun
                 ])
 
                 yAxisValue.push(res[key].length)
@@ -292,7 +299,7 @@
 
               for (const key in res) {
                 c3data1.push([
-                  `data${i}`, res[key].length
+                  `data${i}`, res[key][0].tahun
                 ])
                 c3names1[`data${i}`] = key
                 i++
@@ -336,179 +343,7 @@
             }
 
             break
-          
-          case 'pekerjaan orang tua': {
-              let yAxisValue = [0]
-              let res = groupByKey(data, 'pekerjaan_orang_tua'), i = 1, c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
-              delete res[''] // hapus nama pekerjaan yang kosong
-
-              for (const key in res) {
-
-                if(res[key].pekerjaan_orang_tua != ''){
-                  c3data.push([
-                    `data${i}`, res[key].length
-                  ])
-
-                  yAxisValue.push(res[key].length)
-                  c3names[`data${i}`] = key
-
-                  i++
-                  if(i == 16) break // ambil 15 data saja
-                }
-              }
-
-              for (const key in res) {
-                c3data1.push([
-                  `data${i}`, res[key].length
-                ])
-                c3names1[`data${i}`] = key
-                i++
-              }
-              
-              // urutkan dari terbesar ke terkecil
-              c3data.sort(function(a, b){ return b[1] - a[1] });
-              c3data1.sort(function(a, b){ return b[1] - a[1] });
-
-              let n = 1
-              c3data1.forEach((v) => {
-                $('#table').find('tbody').append(
-                    `
-                    <tr>
-                      <td width="30">${n++}.</td>
-                      <td>${c3names1[v[0]]}</td>
-                      <td>${v[1]}</td>
-                    </tr>
-                    `
-                  )
-              })
-
-              drawChart({
-                data: {
-                  columns: c3data,
-                  type: 'bar',
-                  names: c3names
-                },
-                axis: {
-                  y: {
-                    tick: {
-                      values: yAxisValue
-                    },
-                    label: {
-                      text: 'Jumlah Pekerjaan',
-                      position: 'outer-middle'
-                    }
-                  },
-                }
-              })
-            }
-
-            break
-
-          case 'jarak': {
-            let temp = [], c3data = [], c3names = {}, c3data1 = [], c3names1 = {}
-            
-            for (let i = 0; i < data.length; i++) {
-              if(data[i].gps.trim() != ''){
-                let gps = data[i].gps.split(', '),
-                jarak = calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1)
-
-                // bagi range jarak 0 - 10, 10 - 50, 50 - 100, dst max 500
-                let range = ''
-
-                if(jarak < 10){ range = '0-10 km' }
-                else if(jarak >= 10 && jarak < 50){ range = '10-50 km' }
-                else if(jarak >= 50 && jarak < 100){ range = '50-100 km' }
-                else if(jarak >= 100 && jarak < 150){ range = '100-150 km' }
-                else if(jarak >= 150 && jarak < 200){ range = '150-200 km' }
-                else if(jarak >= 200 && jarak < 250){ range = '200-250 km' }
-                else if(jarak >= 250 && jarak < 300){ range = '250-300 km' }
-                else if(jarak >= 300 && jarak < 350){ range = '300-350 km' }
-                else if(jarak >= 400 && jarak < 450){ range = '400-450 km' }
-                else{ range = '>450 km' }
-
-                temp.push({
-                  kota: data[i].kota,
-                  jarak: calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1),
-                  range: range
-                })
-              }
-            }
-
-            let yAxisValue = [0]
-            let res = groupByKey(temp, 'range'), i = 1
-
-              for (const key in res) {
-                c3data.push([
-                  `data${i}`, res[key].length
-                ])
-
-                let cities = []
-
-                yAxisValue.push(res[key].length)
-
-                res[key].forEach(c => cities.push(c.kota))
-
-                // c3names[`data${i}`] = uniq(cities).toString()+', '+ key
-                c3names[`data${i}`] = key+' ('+(uniq(cities).toString().replace(/,(\s+)?$/, '').replaceAll(',',', '))+')'
-
-                i++
-                // if(i == 16) break // ambil 15 data saja
-              }
-
-              for (const key in res) {
-                c3data1.push([
-                  `data${i}`, res[key].length
-                ])
-
-                let cities = []
-
-                res[key].forEach(c => cities.push(c.kota))
-
-
-                // c3names1[`data${i}`] = res[key][0].kota+', '+ key
-                c3names1[`data${i}`] = key+' ('+(uniq(cities).toString().replace(/,(\s+)?$/, '').replaceAll(',',', '))+')'
-
-                i++
-              }
-              
-              // urutkan dari terbesar ke terkecil
-              c3data.sort(function(a, b){ return b[1] - a[1] });
-              c3data1.sort(function(a, b){ return b[1] - a[1] });
-
-              let n = 1
-              c3data1.forEach((v) => {
-                $('#table').find('tbody').append(
-                    `
-                    <tr>
-                      <td width="30">${n++}.</td>
-                      <td>${c3names1[v[0]]}</td>
-                      <td>${v[1]}</td>
-                    </tr>
-                    `
-                  )
-              })
-
-              drawChart({
-                data: {
-                  columns: c3data,
-                  type: 'bar',
-                  names: c3names
-                },
-                axis: {
-                  y: {
-                    tick: {
-                      values: yAxisValue
-                    },
-                    label: {
-                      text: 'Jumlah Siswa',
-                      position: 'outer-middle'
-                    }
-                  },
-                }
-              })
-          }
-
-          break
+         
         
           default:
             break;
@@ -524,31 +359,13 @@
         }
 
         switch (by) {
-          case 'jenis kelamin': {
-              let l = data.filter((e) => e.jenis_kelamin == 'L').length,
-                  p = data.filter((e) => e.jenis_kelamin == 'P').length
 
-              if(showModal){
-                mod.find('.modal-body').append(
-                  $(ul).append(
-                    $(li).html('<b>Laki-Laki</b> <span class="float-right">'+l+'</span>'),
-                    $(li).html('<b>Perempuan</b> <span class="float-right">'+p+'</span>')
-                  )
-                )
-              }else{
-                let json = {laki_laki: l, perempuan: p}
-                return JSON.stringify(json)
-              }
-          }
-
-          break
-
-          case 'kota': {
-            let res = groupByKey(data, 'kota'), i = 1, c3data = [], c3names = {}
+          case 'absensi': {
+            let res = groupByKey(dataResult, 'nama'), i = 1, c3data = [], c3names = {}
 
             for (const key in res) {
               c3data.push([
-                `data${i}`, res[key].length
+                `data${i}`, res[key][0].kehadiran
               ])
 
               c3names[`data${i}`] = key
@@ -564,7 +381,7 @@
               for (let i = 0; i < c3data.length; i++) {
 
                 mod.find('.modal-body ul').append(
-                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
+                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'%</span>')
                 )
               }
             }else{
@@ -582,12 +399,12 @@
 
           break
 
-          case 'asal sekolah': {
-            let res = groupByKey(data, 'asal_sekolah'), i = 1, c3data = [], c3names = {}
+          case 'alumni': {
+            let res = groupByKey(dataResult, 'nama'), i = 1, c3data = [], c3names = {}
 
             for (const key in res) {
               c3data.push([
-                `data${i}`, res[key].length
+                `data${i}`, res[key][0].tahun
               ])
 
               c3names[`data${i}`] = key
@@ -620,115 +437,6 @@
 
           break
 
-          case 'pekerjaan orang tua': {
-            let res = groupByKey(data, 'pekerjaan_orang_tua'), i = 1, c3data = [], c3names = {}
-
-            for (const key in res) {
-              c3data.push([
-                `data${i}`, res[key].length
-              ])
-
-              c3names[`data${i}`] = key
-
-              i++
-            }
-            
-            // urutkan dari terbesar ke terkecil
-            c3data.sort(function(a, b){ return b[1] - a[1] });
-
-            if(showModal){
-              mod.find('.modal-body').append($(ul))
-              for (let i = 0; i < c3data.length; i++) {
-                mod.find('.modal-body ul').append(
-                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
-                )
-              }
-            }else{
-              let json = []
-              for (let i = 0; i < c3data.length; i++) {
-                json.push({
-                  pekerjaan: c3names[c3data[i][0]],
-                  jumlah: c3data[i][1]
-                })
-              }
-
-              return JSON.stringify(json)
-            }
-          }
-
-          break
-
-          case 'jarak': {
-            let temp = [], c3data = [], c3names = {}
-
-            for (let i = 0; i < data.length; i++) {
-              if(data[i].gps.trim() != ''){
-                let gps = data[i].gps.split(', '),
-                jarak = calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1)
-
-                // bagi range jarak 0 - 10, 10 - 50, 50 - 100, dst max 500
-                let range = ''
-
-                if(jarak < 10){ range = '0-10 km' }
-                else if(jarak >= 10 && jarak < 50){ range = '10-50 km' }
-                else if(jarak >= 50 && jarak < 100){ range = '50-100 km' }
-                else if(jarak >= 100 && jarak < 150){ range = '100-150 km' }
-                else if(jarak >= 150 && jarak < 200){ range = '150-200 km' }
-                else if(jarak >= 200 && jarak < 250){ range = '200-250 km' }
-                else if(jarak >= 250 && jarak < 300){ range = '250-300 km' }
-                else if(jarak >= 300 && jarak < 350){ range = '300-350 km' }
-                else if(jarak >= 400 && jarak < 450){ range = '400-450 km' }
-                else{ range = '>450 km' }
-
-                temp.push({
-                  kota: data[i].kota,
-                  jarak: calcCrow(stiparGPS[0], stiparGPS[1], gps[0], gps[1]).toFixed(1),
-                  range: range
-                })
-              }
-            }
-
-            let res = groupByKey(temp, 'range'), i = 1
-
-            for (const key in res) {
-              c3data.push([
-                `data${i}`, res[key].length
-              ])
-
-              let cities = []
-              res[key].forEach(c => cities.push(c.kota))
-
-
-              // c3names[`data${i}`] = res[key][0].kota+', '+ key
-              c3names[`data${i}`] = key+' ('+(uniq(cities).toString().replace(/,(\s+)?$/, '').replaceAll(',',', '))+')'
-
-              i++
-            }
-
-            c3data.sort(function(a, b){ return b[1] - a[1] });
-            
-            if(showModal){
-              mod.find('.modal-body').append($(ul))
-              for (let i = 0; i < c3data.length; i++) {
-                mod.find('.modal-body ul').append(
-                  $(li).html('<b>'+c3names[c3data[i][0]]+'</b> <span class="float-right">'+c3data[i][1]+'</span>')
-                )
-              }
-            }else{
-              let json = []
-              for (let i = 0; i < c3data.length; i++) {
-                let kab = c3names[c3data[i][0]].replace('>','+')
-
-                json.push({
-                  kabupaten: kab,
-                  jumlah: c3data[i][1]
-                })
-              }
-
-              return JSON.stringify(json)
-            }
-          }
-        
           default:
             break;
         }
