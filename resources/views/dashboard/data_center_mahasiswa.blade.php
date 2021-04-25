@@ -13,17 +13,12 @@
           <div class="row align-items-center">
             <div class="col-auto">
               <h2 class="page-title">
-                Data Center Mahasiswa
+                Data Center
               </h2>
             </div>
 
             <div class="col-auto ml-auto">
-              <div class="input-group">
-                <input type="number" min="2005" max="2050" step="1" value="{{$tahun}}" class="form-control"
-                  id="search-input">
-                <button class="btn btn-white" type="button" onclick="_search()"> <i class="la la-lg la-search"></i>
-                </button>
-              </div>
+
             </div>
 
             @if (Auth::user()->level == 'admin')
@@ -47,10 +42,11 @@
           <div class="card">
             <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
               <li class="nav-item">
-                <a href="{{url('data-center')}}" class="nav-link active" data-bs-toggle="tab">Data Calon Mahasiswa</a>
+                <a href="{{url('data-center')}}" class="nav-link" data-bs-toggle="tab">Data Calon Mahasiswa</a>
               </li>
               <li class="nav-item">
-                <a href="{{url('data-center-mahasiswa')}}" class="nav-link" data-bs-toggle="tab">Data Mahasiswa</a>
+                <a href="{{url('data-center-mahasiswa')}}" class="nav-link active" data-bs-toggle="tab">Data
+                  Mahasiswa</a>
               </li>
             </ul>
           </div>
@@ -65,12 +61,8 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th>Nama</th>
-                <th>Alamat</th>
-                <th>Tanggal Lahir</th>
-                <th>JK</th>
-                <th>Asal Sekolah</th>
-                <th>Pekerjaan Orang Tua</th>
+                <th>Nim</th>
+                <th>Nama Mahasiswa</th>
               </tr>
             </thead>
             <tbody>
@@ -79,12 +71,8 @@
 
               <tr>
                 <td> {{$index++}} </td>
-                <td> {{$item->nama}} </td>
-                <td> {{$item->alamat}} </td>
-                <td> {{date("d-m-Y", strtotime($item->tanggal_lahir))}} </td>
-                <td> {{$item->jenis_kelamin}} </td>
-                <td> {{$item->asal_sekolah}} </td>
-                <td> {{$item->pekerjaan_orang_tua}} </td>
+                <td> {{$item->nim}} </td>
+                <td> {{$item->nama_mahasiswa}} </td>
               </tr>
               @endforeach
             </tbody>
@@ -101,6 +89,7 @@
   @include('modals.form_upload_absensi')
   @include('modals.confirm')
   {{-- @include('partials.script') --}}
+
 
   <script>
     $(document).ready(function() {

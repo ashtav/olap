@@ -27,7 +27,13 @@ Route::group(['middleware' => 'auth'], function () use ($router) {
     $router->group(['prefix' => 'data-center'], function () use ($router) {
         $router->get('/', 'DataCenterController@index');
         $router->post('/', 'DataCenterController@store');
+        $router->post('/absensi', 'DataCenterController@storeAbsensi');
         $router->delete('/{tahun}', 'DataCenterController@destroy');
+    });
+
+    $router->group(['prefix' => 'data-center-mahasiswa'], function () use ($router) {
+        $router->get('/', 'DataCenterMahasiswaController@index');
+        $router->delete('/', 'DataCenterMahasiswaController@destroy');
     });
 
     $router->group(['prefix' => 'data-mart'], function () use ($router) {
@@ -35,6 +41,13 @@ Route::group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/chart', 'DataMartController@chart');
         $router->post('/chart', 'DataMartController@createChart');
         $router->post('/save-result', 'DataMartController@saveResult');
+    });
+
+    $router->group(['prefix' => 'data-absensi'], function () use ($router) {
+        $router->get('/', 'AbsensiController@index');
+        $router->get('/chart', 'AbsensiController@chart');
+        $router->post('/chart', 'AbsensiController@createChart');
+        $router->post('/save-result', 'AbsensiController@saveResult');
     });
 
     $router->group(['prefix' => 'user'], function () use ($router) {

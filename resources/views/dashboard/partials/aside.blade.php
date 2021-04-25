@@ -1,26 +1,32 @@
 <aside class="navbar navbar-vertical navbar-expand-lg navbar-light">
-    <div class="container">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a href="." class="navbar-brand navbar-brand-autodark">
-        {{-- <img src="./static/logo-white.svg" alt="Tabler" class="navbar-brand-image"> --}}
-      </a>
-      <div class="navbar-nav flex-row d-lg-none">
-        <div class="nav-item dropdown d-none d-md-flex mr-3">
-          <a href="#" class="nav-link px-0" data-toggle="dropdown" tabindex="-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
-            <span class="badge bg-red"></span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right dropdown-menu-card">
-            <div class="card">
-              <div class="card-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad amet consectetur exercitationem fugiat in ipsa ipsum, natus odio quidem quod repudiandae sapiente. Amet debitis et magni maxime necessitatibus ullam.
-              </div>
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a href="." class="navbar-brand navbar-brand-autodark">
+      {{-- <img src="./static/logo-white.svg" alt="Tabler" class="navbar-brand-image"> --}}
+    </a>
+    <div class="navbar-nav flex-row d-lg-none">
+      <div class="nav-item dropdown d-none d-md-flex mr-3">
+        <a href="#" class="nav-link px-0" data-toggle="dropdown" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" />
+            <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+            <path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+          <span class="badge bg-red"></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-card">
+          <div class="card">
+            <div class="card-body">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad amet consectetur exercitationem
+              fugiat in ipsa ipsum, natus odio quidem quod repudiandae sapiente. Amet debitis et magni maxime
+              necessitatibus ullam.
             </div>
           </div>
         </div>
-        {{-- <div class="nav-item dropdown">
+      </div>
+      {{-- <div class="nav-item dropdown">
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
             <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)"></span>
             <div class="d-none d-xl-block pl-2">
@@ -42,61 +48,61 @@
               Separated link</a>
           </div>
         </div> --}}
-      </div>
-      <div class="collapse navbar-collapse" id="navbar-menu">
-        <ul class="navbar-nav pt-lg-3">
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-menu">
+      <ul class="navbar-nav pt-lg-3">
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('dashboard')}}" data-href="dashboard">
-              <span class="nav-link-title">
-                <i class="la la-lg la-home mr-1"></i> Beranda
-              </span>
-            </a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url('dashboard')}}" data-href="dashboard">
+            <span class="nav-link-title">
+              <i class="la la-lg la-home mr-1"></i> Beranda
+            </span>
+          </a>
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('data-center')}}" data-href="data-center">
-              <span class="nav-link-title">
-                <i class="la la-lg la-database mr-1"></i> Data Center
-              </span>
-            </a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{url('data-center')}}" data-href="data-center">
+            <span class="nav-link-title">
+              <i class="la la-lg la-database mr-1"></i> Data Center
+            </span>
+          </a>
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('data-mart')}}" data-href="data-mart">
-              <span class="nav-link-title">
-                <i class="la la-lg la-server mr-1"></i> Data Mart
-              </span>
-            </a>
-          </li>
-          
-          @if (Auth::user()->level != 'marketing')
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('user')}}" data-href="user">
-              <span class="nav-link-title">
-                <i class="la la-lg la-user mr-1"></i> Pengguna
-              </span>
-            </a>
-          </li>
-          @endif
+        <li class="nav-item">
+          <a class="nav-link" href="{{url('data-mart')}}" data-href="data-mart">
+            <span class="nav-link-title">
+              <i class="la la-lg la-server mr-1"></i> Data Mart
+            </span>
+          </a>
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('akun')}}" data-href="akun">
-              <span class="nav-link-title">
-                <i class="la la-lg la-lock mr-1"></i> Akun
-              </span>
-            </a>
-          </li>
+        @if (Auth::user()->level != 'marketing')
+        <li class="nav-item">
+          <a class="nav-link" href="{{url('user')}}" data-href="user">
+            <span class="nav-link-title">
+              <i class="la la-lg la-user mr-1"></i> Pengguna
+            </span>
+          </a>
+        </li>
+        @endif
 
-          <li class="nav-item">
-            <a class="nav-link" href="{{url('logout')}}">
-              <span class="nav-link-title text-danger">
-                <i class="la la-lg la-sign-out mr-1"></i> Logout
-              </span>
-            </a>
-          </li>
-          
-          {{-- <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" href="{{url('akun')}}" data-href="akun">
+            <span class="nav-link-title">
+              <i class="la la-lg la-lock mr-1"></i> Akun
+            </span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{{url('logout')}}">
+            <span class="nav-link-title text-danger">
+              <i class="la la-lg la-sign-out mr-1"></i> Logout
+            </span>
+          </a>
+        </li>
+
+        {{-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#navbar-extra" data-toggle="dropdown" role="button" aria-expanded="false" >
               <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M12 17.75l-6.172 3.245 1.179-6.873-4.993-4.867 6.9-1.002L12 2l3.086 6.253 6.9 1.002-4.993 4.867 1.179 6.873z" /></svg>
               </span>
@@ -152,16 +158,16 @@
               </li>
             </ul>
           </li> --}}
-          
-        </ul>
-      </div>
+
+      </ul>
     </div>
+  </div>
 </aside>
 
 @include('partials.script')
 
 <script>
-    $(document).ready(function(){
+  $(document).ready(function(){
         $('#navbar-menu ul').find('li').each(function(){
             let href = $(this).find('a').attr('data-href')
             if(urlp().indexOf(href) > -1){
